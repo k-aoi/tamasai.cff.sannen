@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界のコーヒー産地マップ</title>
+<link rel="stylesheet" href="多摩祭.css">
+</head>
+<body>
+<h1>世界のコーヒー豆が栽培される地域</h1>
+
+<div class="map-container">
+  <img src="世界の地図.png" alt="世界地図">
+
+  <!-- 地域ピン -->
+  <div class="pin" style="top: 60%; left: 50%;" data-region="africa"></div>
+  <div class="pin" style="top: 75%; left: 25%;" data-region="latin"></div>
+  <div class="pin" style="top: 60%; left: 80%;" data-region="asia"></div>
+  <div class="pin" style="top: 45%; left: 15%;" data-region="hokubei"></div>
+</div>
+
+<script>
+const data = {
+  asia: {
+    map: "asia-map.jpg",
+    countries: [
+      { name: "インドネシア", x: 120, y: 150, detail: "深いコクとスパイシーな香りが特徴。" },
+      { name: "ベトナム", x: 132, y: 120, detail: "苦味が強く、濃厚なロブスタ種が中心。" },
+      { name: "日本", x: 150, y: 80, detail: "焙煎技術や喫茶文化が発展している国。" },
+      { name: "中国", x: 150, y: 80, detail: "焙煎技術や喫茶文化が発展している国。" },
+      { name: "タイ", x: 150, y: 80, detail: "焙煎技術や喫茶文化が発展している国。" }
+    ]
+  },
+  africa: {
+    map: "africa-map.jpg",
+    countries: [
+      { name: "エチオピア", x: 130, y: 110, detail: "花のような香りとフルーティーな酸味。" },
+      { name: "ケニア", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" },
+      { name: "ルワンダ", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" },
+      { name: "マダガスカル", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" },
+      { name: "イエメン", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" }
+    ]
+  },
+  nanbei: {
+    map: "latin-america-map.jpg",
+    countries: [
+      { name: "ブラジル", x: 120, y: 150, detail: "ナッツのような香ばしさとマイルドな味。" },
+      { name: "ペルー", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" },
+      { name: "ベネズエラ", x: 120, y: 130, detail: "強い酸味と明るい風味が魅力。" },
+      { name: "コロンビア", x: 110, y: 120, detail: "甘みと酸味のバランスが取れた風味。" }
+    ]
+  },
+  hokubei: {
+    map: "hokubei.jpg",
+    countries: [
+      { name: "カルフォルニア", x: 120, y: 150, detail: "" },
+      { name: "メキシコ", x: 110, y: 120, detail: "" }
+    ]
+  }
+};
+
+const pins = document.querySelectorAll('.map-container .pin');
+
+pins.forEach(pin => {
+  pin.addEventListener('click', () => {
+    const regionKey = pin.dataset.region;
+    const region = data[regionKey];
+
+    // 既存の吹き出し削除
+    const existing = document.querySelector('.popup');
+    if (existing) existing.remove();
+
+    // 吹き出し作成
+    const popup = document.createElement('div');
+    popup.className = 'popup';
+
+    // 閉じるボタン
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'close-btn';
+    closeBtn.textContent = "×";
+    closeBtn.addEventListener('click', () => popup.remove());
+    popup.appendChild(closeBtn);
+
+    // タイトル
+    const title = document.createElement('strong');
+    title.textContent = regionKey.toUpperCase();
+    popup.appendChild(title);
+
+    // 地図ラッパー
+    const mapWrapper = document.createElement('div');
+    mapWrapper.className = 'map-wrapper';
+    const mapImg = document.createElement('img');
+    mapImg.src = region.map;
+    mapImg.alt = regionKey;
+    mapWrapper.appendChild(mapImg);
+
+    // 国ピン追加
+    region.countries.forEach(country => {
+      const countryPin = document.createElement('div');
+      countryPin.className = 'country-pin';
+      countryPin.style.left = `${country.x}px`;
+      countryPin.style.top = `${country.y}px`;
+      countryPin.title = country.name;
+
+      countryPin.addEventListener('click', (e) => {
+        e.stopPropagation(); // ここで吹き出し移動防止
+        let info = mapWrapper.querySelector('.country-info');
+        if (!info) {
+          info = document.createElement('div');
+          info.className = 'country-info';
+          mapWrapper.appendChild(info);
+        }
+        info.textContent = `${country.name}: ${country.detail}`;
+      });
+
+      mapWrapper.appendChild(countryPin);
+    });
+
+    popup.appendChild(mapWrapper);
+
+    // 地域ピンの位置に表示
+    const rect = pin.getBoundingClientRect();
+    const containerRect = document.querySelector('.map-container').getBoundingClientRect();
+    popup.style.left = `${rect.left - containerRect.left}px`;
+    popup.style.top = `${rect.top - containerRect.top - 220}px`; // 上に表示
+    document.querySelector('.map-container').appendChild(popup);
+  });
+});
+
+</script>
+</body>
+</html>
+
