@@ -1,0 +1,121 @@
+body {
+  font-family: "Noto Sans JP", sans-serif;
+  background: #d1f3cd;
+  color: #3b2f2f;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.map-container {
+  position: relative;
+  display: inline-block;
+  width: 90%;
+  max-width: 700px;
+  margin: 20px auto;
+}
+
+.map-container img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* 地域ピン */
+.pin {
+  width: 24px;
+  height: 24px;
+  background: #e63946;
+  border-radius: 50%;
+  position: absolute;
+  transform: translate(-50%, -100%);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.3s, background 0.3s;
+}
+
+.pin:hover {
+  background: #ff6b6b;
+  transform: translate(-50%, -110%) scale(1.2);
+}
+
+/* 吹き出し */
+/* 吹き出し */
+.popup {
+  position: absolute;       /* ページ上で絶対配置 */
+  background: white;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  width: 300px;
+  z-index: 10;
+  display: inline-block;
+}
+
+/* 吹き出し内を基準にする */
+.popup img {
+  width: 100%;
+  border-radius: 6px;
+  display: block;
+  position: relative;       /* 親の基準として使う */
+}
+
+/* 吹き出し内の国ピン */
+.country-pin {
+  width: 16px;
+  height: 16px;
+  background: #e63946;
+  border-radius: 50%;
+  position: absolute;       /* 吹き出し画像に対して絶対位置 */
+  transform: translate(-50%, -50%); /* 真ん中揃え */
+  cursor: pointer;
+  z-index: 5;
+}
+
+
+.popup .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: transparent;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #555;
+}
+
+.popup .close-btn:hover {
+  color: #e63946;
+}
+
+/* 地図内ピン */
+.map-wrapper {
+  position: relative; /* 国ピンの基準 */
+}
+
+.country-pin {
+  width: 16px;
+  height: 16px;
+  background: #e63946;
+  border-radius: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.country-pin:hover {
+  background: #ff6b6b;
+}
+
+.country-info {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  text-align: left;
+}
+
+/* スマホ用 */
+@media (max-width: 600px) {
+  .pin { width: 18px; height: 18px; }
+  .country-pin { width: 12px; height: 12px; }
+  .popup { width: 160px; padding: 8px; font-size: 0.9rem; }
+}
+
